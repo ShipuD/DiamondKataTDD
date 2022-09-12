@@ -18,13 +18,15 @@ namespace DiamondKata
         {
             IsValidAlphabet(maxChar);
 
-            var maxDiamondRows = (maxChar - _firstAlphabetChar + 1) * 2 - 1;
+            char upperChar = char.ToUpper(maxChar);
+
+            var maxDiamondRows = (upperChar - _firstAlphabetChar + 1) * 2 - 1;
 
             List<string> _rows = new List<string>();
             //Half of diamond
-            for (char currentChar = _firstAlphabetChar; currentChar <= maxChar; currentChar++)
+            for (char currentChar = _firstAlphabetChar; currentChar <= upperChar; currentChar++)
             {
-                string row = GenerateRow(currentChar, maxChar, maxDiamondRows);
+                string row = GenerateRow(currentChar, upperChar, maxDiamondRows);
                 _rows.Add(row);
             }
             List<string> _bottomRows = Enumerable.Reverse(_rows).ToList();

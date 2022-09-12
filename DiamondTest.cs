@@ -44,6 +44,18 @@ namespace DiamondKataTest
             //Console.WriteLine(lst[0]);
             Assert.IsTrue(lst.Count ==1 && lst[0] == "A");
         }
+
+        [TestMethod]
+        public void DiamondShouldContainOnlyUppercasesForLowerCaseInput()
+        {
+            List<string> lst = _diamond.Generate('c');
+            
+            lst.All(r => 
+            {
+                return r.Trim().All(ch => char.IsUpper(ch));
+            });
+            
+        }
         [TestMethod]
         public void LastRowShouldAlwaysBeA()
         {
