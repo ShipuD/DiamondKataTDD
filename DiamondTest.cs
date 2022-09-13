@@ -10,6 +10,7 @@ namespace DiamondKataTest
     public class DiamondTest
     {
         private readonly Diamond _diamond;
+        private readonly string _lowerCaseAlphabets = "abcdefghijklmnopqrstuvwxyz";
         private const string InvalidCharMessage = "Invalid character"; //Should be in const file
 
         public DiamondTest()
@@ -48,33 +49,42 @@ namespace DiamondKataTest
         [TestMethod]
         public void DiamondShouldContainOnlyUppercasesForLowerCaseInput()
         {
-            List<string> lst = _diamond.Generate('c');
-            
-            lst.All(r => 
+            foreach (char ch1 in _lowerCaseAlphabets)
             {
-                return r.Trim().All(ch => char.IsUpper(ch));
-            });
+                List<string> lst = _diamond.Generate(ch1);
+
+                Assert.IsTrue(lst.All(r =>
+                {
+                    return r.Trim().All(ch => char.IsUpper(ch) || char.IsWhiteSpace(ch));
+                }));
+            }
             
         }
         [TestMethod]
         public void LastRowShouldAlwaysBeA()
         {
-            List<string> lst = _diamond.Generate('D');
-            //Console.WriteLine(lst[0]);
-            Assert.IsTrue(lst.Count > 0 && lst[lst.Count -1].Trim() == "A");
+            foreach (char ch in _lowerCaseAlphabets)
+            {
+                List<string> lst = _diamond.Generate(ch);
+                //Console.WriteLine(lst[0]);
+                Assert.IsTrue(lst.Count > 0 && lst[lst.Count - 1].Trim() == "A");
+            }
         }
 
         [TestMethod]
         public void LastRowShouldAlwaysBeSameAsFirstWithSpaces()
         {
-            List<string> lst = _diamond.Generate('D');            
-            Assert.IsTrue(lst.Count > 0 && lst[lst.Count - 1] == lst[0]);
+            foreach (char ch in _lowerCaseAlphabets)
+            {
+                List<string> lst = _diamond.Generate(ch);
+                Assert.IsTrue(lst.Count > 0 && lst[lst.Count - 1] == lst[0]);
+            }
         }
 
         [TestMethod]
         public void AShouldBeIntheMiddleOfFirstRow()
         {   
-            var topRow = _diamond.Generate('D').ToArray()[0];
+            var topRow = _diamond.Generate('I').ToArray()[0];
             var leftHalf = topRow.Substring(0, topRow.Length / 2);
             var righttHalf = topRow.Substring((topRow.Length / 2) + 1);
 
@@ -90,7 +100,7 @@ namespace DiamondKataTest
         [TestMethod]
         public void ShouldBeHorizontallySymmetric()
         {
-            var diamondInArray = _diamond.Generate('D').ToArray();
+            var diamondInArray = _diamond.Generate('G').ToArray();
             var half = diamondInArray.Length / 2;
             var topHalf = diamondInArray[..half];
             var bottomHalf = diamondInArray[(half + 1)..];
@@ -101,7 +111,7 @@ namespace DiamondKataTest
         [TestMethod]
         public void ShouldBeVerticallySymmetric()
         {
-            Assert.IsTrue(_diamond.Generate('D').ToArray()
+            Assert.IsTrue(_diamond.Generate('F').ToArray()
                         .All(r =>
                         {
                             var half = r.Length / 2;
